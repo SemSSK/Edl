@@ -117,6 +117,7 @@
 
 </section>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <script defer src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
 <script defer src="theme.js"></script>
@@ -172,3 +173,5 @@
     }
 </script>
 >>>>>>> 46ab21f (added incode script using defer)
+=======
+>>>>>>> 31a90c8 (reset scripts to the head)
