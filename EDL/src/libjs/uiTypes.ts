@@ -7,6 +7,14 @@ export type SideBarItem = {
   active: boolean;
 };
 
+export type Step = {
+  content: ComponentType;
+  active: boolean;
+  complete: boolean;
+  title: string;
+  id: number;
+};
+
 export type Page = {
   path: string;
   component: ComponentType;

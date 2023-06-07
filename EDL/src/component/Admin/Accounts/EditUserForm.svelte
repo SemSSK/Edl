@@ -113,14 +113,6 @@
     <div class="w-full flex justify-evenly">
       <button
         type="button"
-        class="text-white bg-red-700 hover:bg-red-800 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 transform active:scale-75 transition-transform"
-        on:click={() => {}}
-      >
-        <Icon class="w-5 h-5 mr-2 -ml-1" icon="mdi:clear" />
-        Clear
-      </button>
-      <button
-        type="button"
         class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transform active:scale-75 transition-transform"
         on:click={submit}
       >

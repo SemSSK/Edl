@@ -11,8 +11,8 @@
   } from "../../../libjs/apis/admin/virtualPlatform";
   let headers: string[] = ["vice doyen email", "name", "actions"];
   let vp_vds: { vp: VirtualPlatform; vd: User }[] = [];
-  onMount(async () => {
-    await getVirtualPlatforms(
+  onMount(() => {
+    getVirtualPlatforms(
       (vps) => {
         vps.forEach((vp) =>
           getUser(
@@ -63,8 +63,8 @@
   <div class="pt-5 pb-5 text-center">
     <button
       class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500 transform active:scale-75 transition-transform"
-      on:click={async () => {
-        await navigate("/admin/virtplat/add");
+      on:click={() => {
+        navigate("/admin/virtplat/add");
       }}
     >
       <Icon icon="ic:baseline-add" />
