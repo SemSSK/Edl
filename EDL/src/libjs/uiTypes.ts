@@ -10,9 +10,9 @@ export type SideBarItem = {
 export type Step = {
   content: ComponentType;
   active: boolean;
-  complete: boolean;
   title: string;
   id: number;
+  prop: any;
 };
 
 export type Page = {

@@ -1,33 +1,28 @@
 <script lang="ts">
   import Icon from "@iconify/svelte";
-  import type { ComponentType } from "svelte";
   import FormAdd from "./FormAdd.svelte";
   import TeacherTable from "./User/TeacherTable.svelte";
   import type { Step } from "../../libjs/uiTypes";
   import { pipe } from "fp-ts/lib/function";
   import { option } from "fp-ts";
-  import { match } from "fp-ts/lib/EitherT";
   export let steps: Step[] = [
     {
       id: 1,
       title: "session",
-      active: false,
+      active: true,
       content: FormAdd,
-      complete: false,
     },
     {
       id: 2,
       title: "modules",
-      active: true,
+      active: false,
       content: TeacherTable,
-      complete: false,
     },
     {
       id: 3,
       title: "ababa",
       active: false,
       content: TeacherTable,
-      complete: false,
     },
   ];
 
@@ -36,7 +31,6 @@
     title: "confirmation",
     active: false,
     content: TeacherTable,
-    complete: false,
   };
 
   let activateById = (id: number) => {

@@ -22,17 +22,16 @@ export function get_possible_applicants(
     ),
     taskOption.fromTaskEither,
     taskOption.map((r) => r.data),
-    taskOption.filter(isUserArray),
     taskOption.match(() => console.error("bad payload"), callback)
-  );
+  )();
 }
 
-export function get_affected_applicants(
+export async function get_affected_applicants(
   callback: (a: User[]) => void,
   failure: () => void,
   session_id: number
 ) {
-  pipe(
+  return pipe(
     taskEither.tryCatch(
       () =>
         axios.get(
@@ -46,9 +45,31 @@ export function get_affected_applicants(
     ),
     taskOption.fromTaskEither,
     taskOption.map((r) => r.data),
-    taskOption.filter(isUserArray),
     taskOption.match(() => console.error("bad payload"), callback)
-  );
+  )();
+}
+
+export async function get_applicant_affectations(
+  callback: (a: ApplicantAffectation[]) => void,
+  failure: () => void,
+  session_id: number
+) {
+  return pipe(
+    taskEither.tryCatch(
+      () =>
+        axios.get(
+          `${serverUrlBase}/vice-doyen/applicantaffected/${session_id}`,
+          axiosConfig
+        ),
+      (e) =>
+        handleAxiosError(e, failure, () =>
+          console.error("Unknown error get_session")
+        )
+    ),
+    taskOption.fromTaskEither,
+    taskOption.map((r) => r.data),
+    taskOption.match(() => console.error("bad payload"), callback)
+  )();
 }
 export function affect_applicant(
   callback: () => void,

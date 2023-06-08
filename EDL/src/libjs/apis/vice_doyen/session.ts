@@ -7,14 +7,12 @@ import {
 import axios from "axios";
 import { axiosConfig, handleAxiosError, serverUrlBase } from "../../core";
 import { pipe } from "fp-ts/lib/function";
+import type { User } from "../../model/User";
 
-export function get_sessions(
-  callBack: (s: Session[]) => void,
-  failure: () => void
-) {
+export function get_cfd(callBack: (s: User) => void, failure: () => void) {
   pipe(
     taskEither.tryCatch(
-      () => axios.get(`${serverUrlBase}/vice-doyen`, axiosConfig),
+      () => axios.get(`${serverUrlBase}/vice-doyen/getcfd`, axiosConfig),
       (e) =>
         handleAxiosError(e, failure, () =>
           console.error("Unknown error get_session")
@@ -22,7 +20,24 @@ export function get_sessions(
     ),
     taskOption.fromTaskEither,
     taskOption.map((r) => r.data),
-    taskOption.filter(isSessionArray),
+    taskOption.match(() => console.error("bad payload"), callBack)
+  )();
+}
+
+export function get_sessions(
+  callBack: (s: Session[]) => void,
+  failure: () => void
+) {
+  pipe(
+    taskEither.tryCatch(
+      () => axios.get(`${serverUrlBase}/vice-doyen/`, axiosConfig),
+      (e) =>
+        handleAxiosError(e, failure, () =>
+          console.error("Unknown error get_session")
+        )
+    ),
+    taskOption.fromTaskEither,
+    taskOption.map((r) => r.data),
     taskOption.match(() => console.error("bad payload"), callBack)
   )();
 }
@@ -33,7 +48,7 @@ export function create_session(
 ) {
   pipe(
     taskEither.tryCatch(
-      () => axios.post(`${serverUrlBase}/vice-doyen`, s, axiosConfig),
+      () => axios.post(`${serverUrlBase}/vice-doyen/`, s, axiosConfig),
       (e) =>
         handleAxiosError(e, failure, () =>
           console.error("Unknown error get_session")

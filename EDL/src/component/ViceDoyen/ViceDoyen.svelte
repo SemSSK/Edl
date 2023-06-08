@@ -1,23 +1,20 @@
 <script lang="ts">
   import type { Page, SideBarItem } from "../../libjs/uiTypes";
   import Main from "../general/User/Main.svelte";
+  import ApplicantsEncoding from "./Session/Creation/ApplicantsEncoding.svelte";
+  import SessionForm from "./Session/Creation/SessionForm.svelte";
+  import SessionList from "./Session/SessionList.svelte";
   let userRole = "Vice Doyen";
   let navBar: SideBarItem[] = [
-    // {
-    //   icon: "bxs-user",
-    //   link: "/admin/users",
-    //   text: "Accounts",
-    //   active: false,
-    // },
     {
       icon: "bxs-dashboard",
-      link: "/vd",
+      link: "/vicedoyen",
       text: "Dashboard",
       active: false,
     },
     {
       icon: "bxs-graduation",
-      link: "/vd/session",
+      link: "/vicedoyen/session",
       text: "Sessions",
       active: false,
     },
@@ -27,6 +24,18 @@
     //   path: "/users",
     //   component: UserTable,
     // },
+    {
+      path: "/session",
+      component: SessionList,
+    },
+    {
+      path: "/session/create",
+      component: SessionForm,
+    },
+    {
+      path: "/session/:session_id",
+      component: ApplicantsEncoding,
+    },
   ];
 </script>
 

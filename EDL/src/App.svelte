@@ -11,9 +11,9 @@
   <main>
     <Route path="login" component={Login} />
     <Route path="admin/*" component={Admin} />
-    <Route path="vd/*" component={ViceDoyen} />
+    <Route path="vicedoyen/*" component={ViceDoyen} />
     <Route path="test">
-      <Stepper />
+      <!-- <Stepper /> -->
     </Route>
   </main>
 </Router>
