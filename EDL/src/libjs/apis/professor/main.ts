@@ -29,6 +29,25 @@ export function get_sessions(
   )();
 }
 
+export function get_sessions_to_grad(
+  callback: (s: Session[]) => void,
+  failure: () => void
+) {
+  return pipe(
+    taskEither.tryCatch(
+      () => axios.get(`${serverUrlBase}/professor/gradsession`, axiosConfig),
+      (e) =>
+        handleAxiosError(e, failure, () =>
+          console.error("unknown Error in get_sessions")
+        )
+    ),
+    taskOption.fromTaskEither,
+    taskOption.map((r) => r.data),
+    taskOption.filter(isSessionArray),
+    taskOption.match(() => console.error("Bad payload"), callback)
+  )();
+}
+
 export function get_corrections(
   callBack: (c: correctionDisplay[]) => void,
   failure: () => void,
@@ -60,7 +79,7 @@ export function add_mark(
   return pipe(
     taskEither.tryCatch(
       () =>
-        axios.post(`${serverUrlBase}/professor/corrections`, ami, axiosConfig),
+        axios.put(`${serverUrlBase}/professor/corrections`, ami, axiosConfig),
       (e) =>
         handleAxiosError(e, failure, () =>
           console.error("unknown Error in get_sessions")

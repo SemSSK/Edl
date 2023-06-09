@@ -262,7 +262,7 @@ export function end_session(
   return pipe(
     taskEither.tryCatch(
       () =>
-        axios.post(
+        axios.put(
           `${serverUrlBase}/cfd/result/session=${session_id}`,
           {},
           axiosConfig

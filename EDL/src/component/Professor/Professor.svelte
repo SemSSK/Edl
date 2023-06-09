@@ -2,6 +2,8 @@
   import type { Page, SideBarItem } from "../../libjs/uiTypes";
   import Content from "../general/User/Content.svelte";
   import Main from "../general/User/Main.svelte";
+  import GradingSessionList from "./Grading/GradingSessionList.svelte";
+  import GradingTable from "./Grading/GradingTable.svelte";
   import MonitoringList from "./MonitoringList.svelte";
   let userRole = "Professor";
   let navBar: SideBarItem[] = [
@@ -32,6 +34,14 @@
     {
       path: "/monitoring",
       component: MonitoringList,
+    },
+    {
+      path: "/grading/:session_id",
+      component: GradingTable,
+    },
+    {
+      path: "/grading",
+      component: GradingSessionList,
     },
   ];
 </script>
