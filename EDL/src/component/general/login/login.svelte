@@ -23,15 +23,15 @@
   <script defer type="text/javascript" src="/js/login.js"></script>
 </svelte:head>
 
-<img class="wave" src="" alt="icon" />
+<img class="wave" src="wave.png" alt="icon" />
 <div class="container">
   <div class="img">
-    <img src="crab-dancing.gif" alt="icon" />
+    <img src="center.svg" alt="icon" />
   </div>
   <div class="login-content">
     <form action="index.html">
-      <img src="vite.svg" alt="icon" />
-      <h2 class="title">Welcome</h2>
+      <img src="icon.jpg" alt="icon" class="m-auto" />
+      <h2 class="title dark:text-white">Welcome</h2>
       <Input
         placeholder="Username"
         type="text"

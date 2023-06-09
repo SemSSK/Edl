@@ -32,7 +32,7 @@ export async function deleteVirtualPlatform(
   failure: () => void,
   vd_id: number
 ) {
-  pipe(
+  return pipe(
     taskEither.tryCatch(
       () =>
         axios.delete(

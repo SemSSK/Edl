@@ -50,6 +50,7 @@ form{
 
 .login-content img{
     height: 200px;
+		border-radius: 50%;
 }
 
 .login-content h2{

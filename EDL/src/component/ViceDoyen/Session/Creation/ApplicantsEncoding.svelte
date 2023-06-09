@@ -74,9 +74,9 @@
     <tbody>
       {#each users as u}
         <tr
-          class="text-center bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+          class="text-center bg-white border-b dark:bg-gray-800 dark:text-white dark:border-gray-700"
         >
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 dark:text-white">
             {u.user.email}
           </td>
           <td class="px-6 py-4">

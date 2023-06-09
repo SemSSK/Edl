@@ -4,7 +4,8 @@
   import Content from "./Content.svelte";
   import { Route, Router } from "svelte-navigator";
   import type { Page, SideBarItem } from "../../../libjs/uiTypes";
-  let hide = false;
+  import { pipe } from "fp-ts/lib/function";
+  let hide: boolean = false;
   export let userRole: string;
   export let navBar: SideBarItem[];
   export let pages: Page[];

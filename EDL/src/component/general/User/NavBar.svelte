@@ -1,6 +1,14 @@
 <script lang="ts">
   export let hidebutton: () => void;
   export let hide = false;
+  let darkMode: boolean = localStorage.getItem("darkMode") === "true";
+  console.log(darkMode);
+  const toggleDarkMod = () => {
+    darkMode = !darkMode;
+    console.log(darkMode);
+    localStorage.setItem("darkMode", JSON.stringify(darkMode));
+    window.document.body.classList.toggle("dark");
+  };
 </script>
 
 <nav class:hide>
@@ -18,7 +26,13 @@
       >
     </div>
   </div>
-  <input type="checkbox" id="switch-mode" hidden />
+  <input
+    type="checkbox"
+    id="switch-mode"
+    hidden
+    checked={darkMode}
+    on:change={toggleDarkMod}
+  />
   <label for="switch-mode" class="switch-mode" />
 </nav>
 

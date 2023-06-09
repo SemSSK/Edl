@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let hide;
+  export let hide: boolean;
 </script>
 
 <section id="content" class:hide>

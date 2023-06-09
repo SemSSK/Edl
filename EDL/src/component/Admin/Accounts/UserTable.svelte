@@ -1,20 +1,13 @@
 <script lang="ts">
   import Icon from "@iconify/svelte";
-  import type { User } from "../../../libjs/model/User";
+  import type { Role, User } from "../../../libjs/model/User";
   import { onMount } from "svelte";
   import { deleteUser, getUsers } from "../../../libjs/apis/admin/accounts";
   import { navigate } from "svelte-navigator";
   import { id } from "fp-ts/lib/Refinement";
-  let headers: string[] = [
-    "id",
-    "email",
-    "role",
-    "domain",
-    "specialty",
-    "actions",
-  ];
+  let roles: string[] = ["Role", "Applicant", "CFD", "ViceDoyen", "Professor"];
   let users: User[] = [];
-
+  let role_to_display: string = "Role";
   onMount(async () => {
     getUsers(
       (us) => (users = us.filter((u) => u.role !== "Admin")),
@@ -54,33 +47,43 @@
       class="text-xs text-white uppercase bg-gray-500 dark:bg-gray-700 dark:text-gray-400"
     >
       <tr>
-        {#each headers as h}
-          <th class="px-6 py-3 text-center">
-            {h}
-          </th>
-        {/each}
+        <th class="px-6 py-3 text-center"> numero </th>
+        <th class="px-6 py-3 text-center"> email </th>
+        <th class="px-6 py-3 text-center">
+          <select
+            bind:value={role_to_display}
+            class="ml-2 text-black bg-white p-2 rounded-md dark:text-white dark:bg-gray-500"
+          >
+            {#each roles as role}
+              <option value={role}>{role}</option>
+            {/each}
+          </select>
+        </th>
+        <th class="px-6 py-3 text-center"> domain </th>
+        <th class="px-6 py-3 text-center"> specialty </th>
+        <th class="px-6 py-3 text-center"> actions </th>
       </tr>
     </thead>
     <tbody>
-      {#each users as u}
+      {#each users.filter((u) => role_to_display === "Role" || u.role === role_to_display) as u}
         <tr
-          class="text-black text-center bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+          class="text-black text-center bg-white border-b dark:bg-gray-800 dark:text-white dark:border-gray-700"
         >
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 dark:text-white">
             {u.id}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 dark:text-white">
             {u.email}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 dark:text-white">
             {u.role}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 dark:text-white">
             {#if u.domaine}
               {u.domaine}
             {/if}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 dark:text-white">
             {#if u.specialty}
               {u.specialty}
             {/if}

@@ -33,24 +33,11 @@
     );
   });
 
-  let deleteFunction = (vd_id: number) => {
-    deleteVirtualPlatform(
+  let deleteFunction = async (vd_id: number) => {
+    await deleteVirtualPlatform(
       (vps) => {
-        vps.forEach((vp) =>
-          getUser(
-            (u) =>
-              (vp_vds = [
-                ...vp_vds,
-                {
-                  vp,
-                  vd: u,
-                },
-              ]),
-            () => {
-              navigate("login");
-            },
-            vp.vd_id
-          )
+        vp_vds = vp_vds.filter((v) =>
+          vps.find((vp) => vp.vd_id === v.vp.vd_id)
         );
       },
       () => {},
@@ -59,53 +46,46 @@
   };
 </script>
 
-<div class="w-full h-full">
-  <div class="pt-5 pb-5 text-center">
-    <button
-      class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500 transform active:scale-75 transition-transform"
-      on:click={() => {
-        navigate("/admin/virtplat/add");
-      }}
+<div class="w-full text-left pb-5">
+  <button
+    class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500 transform active:scale-75 transition-transform"
+    on:click={() => {
+      navigate("/admin/virtplat/add");
+    }}
+  >
+    <Icon icon="ic:baseline-add" />
+  </button>
+</div>
+<div class="w-full grid grid-flow-row grid-cols-3 gap-5">
+  {#each vp_vds as v}
+    <div
+      class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 grid grid-flow-row grid-cols-2 gap-5"
     >
-      <Icon icon="ic:baseline-add" />
-    </button>
-  </div>
-  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-    <thead
-      class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
-    >
-      <tr>
-        {#each headers as h}
-          <th class="px-6 py-3 text-center">
-            {h}
-          </th>
-        {/each}
-      </tr>
-    </thead>
-    <tbody>
-      {#each vp_vds as v}
-        <tr
-          class="text-center bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+      <img
+        class="w-full h-full rounded-full"
+        src={`/${v.vp.name.toLowerCase()}.jpg`}
+        alt="icon"
+      />
+      <div>
+        <h5
+          class="mb-2 text-l font-bold tracking-tight text-gray-900 dark:text-white"
         >
-          <td class="px-6 py-4">
-            {v.vd.email}
-          </td>
-          <td class="px-6 py-4">
-            {v.vp.name}
-          </td>
-          <td
-            class=" px-6 py-4 flex flex-row justify-center content-center space-x-5"
+          {v.vp.name.toUpperCase()}
+        </h5>
+        <h5
+          class="mb-2 text-l font-bold tracking-tight text-gray-900 dark:text-white"
+        >
+          Managed by : {v.vd.email}
+        </h5>
+        <div class="mt-5 w-full text-right">
+          <button
+            class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800 dark:hover:bg-red-500 transform active:scale-75 transition-transform"
+            on:click={async () => deleteFunction(v.vp.vd_id)}
           >
-            <button
-              class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800 dark:hover:bg-red-500 transform active:scale-75 transition-transform"
-              on:click={async () => await deleteFunction(v.vp.vd_id)}
-            >
-              <Icon class="w-5 h-5 mr-2 -ml-1" icon="ic:baseline-delete" />
-              Delete
-            </button>
-          </td>
-        </tr>
-      {/each}
-    </tbody>
-  </table>
+            <Icon class="w-5 h-5" icon="ic:baseline-delete" />
+          </button>
+        </div>
+      </div>
+    </div>
+  {/each}
 </div>

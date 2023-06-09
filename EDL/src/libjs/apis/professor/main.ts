@@ -14,7 +14,7 @@ export function get_sessions(
   callback: (s: Session[]) => void,
   failure: () => void
 ) {
-  pipe(
+  return pipe(
     taskEither.tryCatch(
       () => axios.get(`${serverUrlBase}/professor/session`, axiosConfig),
       (e) =>
@@ -28,12 +28,13 @@ export function get_sessions(
     taskOption.match(() => console.error("Bad payload"), callback)
   )();
 }
+
 export function get_corrections(
   callBack: (c: correctionDisplay[]) => void,
   failure: () => void,
   session_id: number
 ) {
-  pipe(
+  return pipe(
     taskEither.tryCatch(
       () =>
         axios.get(
@@ -56,7 +57,7 @@ export function add_mark(
   failure: () => void,
   ami: AddMarkInput
 ) {
-  pipe(
+  return pipe(
     taskEither.tryCatch(
       () =>
         axios.post(`${serverUrlBase}/professor/corrections`, ami, axiosConfig),
@@ -76,7 +77,7 @@ export function get_themes(
   failure: () => void,
   session_id: number
 ) {
-  pipe(
+  return pipe(
     taskEither.tryCatch(
       () =>
         axios.get(
@@ -100,7 +101,7 @@ export function add_theme(
   failure: () => void,
   theme: Theme
 ) {
-  pipe(
+  return pipe(
     taskEither.tryCatch(
       () => axios.post(`${serverUrlBase}/professor/theme`, theme, axiosConfig),
       (e) =>

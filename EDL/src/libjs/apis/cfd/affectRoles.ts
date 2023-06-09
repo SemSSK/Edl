@@ -13,9 +13,9 @@ export function get_sessions(
   callback: (s: Session[]) => void,
   failure: () => void
 ) {
-  pipe(
+  return pipe(
     taskEither.tryCatch(
-      () => axios.get(`${serverUrlBase}/cfd`, axiosConfig),
+      () => axios.get(`${serverUrlBase}/cfd/`, axiosConfig),
       (e) =>
         handleAxiosError(e, failure, () =>
           console.error("unknown Error in get_sessions")
@@ -23,7 +23,6 @@ export function get_sessions(
     ),
     taskOption.fromTaskEither,
     taskOption.map((r) => r.data),
-    taskOption.filter(isSessionArray),
     taskOption.match(() => console.error("Bad payload"), callback)
   )();
 }
@@ -33,7 +32,7 @@ export function get_possible_monitors(
   failure: () => void,
   session_id: number
 ) {
-  pipe(
+  return pipe(
     taskEither.tryCatch(
       () =>
         axios.get(
@@ -47,7 +46,6 @@ export function get_possible_monitors(
     ),
     taskOption.fromTaskEither,
     taskOption.map((r) => r.data),
-    taskOption.filter(isUserArray),
     taskOption.match(() => console.error("Bad payload"), callback)
   )();
 }
@@ -57,7 +55,7 @@ export function get_affected_monitors(
   failure: () => void,
   session_id: number
 ) {
-  pipe(
+  return pipe(
     taskEither.tryCatch(
       () =>
         axios.get(
@@ -71,7 +69,6 @@ export function get_affected_monitors(
     ),
     taskOption.fromTaskEither,
     taskOption.map((r) => r.data),
-    taskOption.filter(isUserArray),
     taskOption.match(() => console.error("Bad payload"), callback)
   )();
 }
@@ -81,7 +78,7 @@ export function add_monitor(
   failure: () => void,
   monitor_affectation: MonitorAffectation
 ) {
-  pipe(
+  return pipe(
     taskEither.tryCatch(
       () =>
         axios.post(
@@ -105,7 +102,7 @@ export function delete_monitor(
   failure: () => void,
   monitor_affectation: MonitorAffectation
 ) {
-  pipe(
+  return pipe(
     taskEither.tryCatch(
       () =>
         axios.delete(`${serverUrlBase}/cfd/monitor`, {
@@ -128,7 +125,7 @@ export function get_possible_correctors(
   failure: () => void,
   session_id: number
 ) {
-  pipe(
+  return pipe(
     taskEither.tryCatch(
       () =>
         axios.get(
@@ -142,7 +139,6 @@ export function get_possible_correctors(
     ),
     taskOption.fromTaskEither,
     taskOption.map((r) => r.data),
-    taskOption.filter(isUserArray),
     taskOption.match(() => console.error("Bad payload"), callback)
   )();
 }
@@ -152,11 +148,11 @@ export function get_modules(
   failure: () => void,
   session_id: number
 ) {
-  pipe(
+  return pipe(
     taskEither.tryCatch(
       () =>
         axios.get(
-          `${serverUrlBase}/cfd/result/correctors/session=${session_id}`,
+          `${serverUrlBase}/cfd/result/module/session=${session_id}`,
           axiosConfig
         ),
       (e) =>
@@ -166,7 +162,6 @@ export function get_modules(
     ),
     taskOption.fromTaskEither,
     taskOption.map((r) => r.data),
-    taskOption.filter(isModuleArray),
     taskOption.match(() => console.error("Bad payload"), callback)
   )();
 }
@@ -176,7 +171,7 @@ export function get_applicants(
   failure: () => void,
   session_id: number
 ) {
-  pipe(
+  return pipe(
     taskEither.tryCatch(
       () =>
         axios.get(
@@ -190,7 +185,6 @@ export function get_applicants(
     ),
     taskOption.fromTaskEither,
     taskOption.map((r) => r.data),
-    taskOption.filter(isUserArray),
     taskOption.match(() => console.error("Bad payload"), callback)
   )();
 }
@@ -200,7 +194,7 @@ export function create_result(
   failure: () => void,
   res: Result
 ) {
-  pipe(
+  return pipe(
     taskEither.tryCatch(
       () => axios.post(`${serverUrlBase}/cfd/result`, res, axiosConfig),
       (e) =>
@@ -219,7 +213,7 @@ export function check_if_correction_ended(
   failure: () => void,
   session_id: number
 ) {
-  pipe(
+  return pipe(
     taskEither.tryCatch(
       () =>
         axios.get(
@@ -233,7 +227,6 @@ export function check_if_correction_ended(
     ),
     taskOption.fromTaskEither,
     taskOption.map((r) => r.data),
-    taskOption.filter(isBoolean),
     taskOption.match(() => console.error("Bad payload"), callback)
   )();
 }
@@ -243,7 +236,7 @@ export function get_results(
   failure: () => void,
   session_id: number
 ) {
-  pipe(
+  return pipe(
     taskEither.tryCatch(
       () =>
         axios.get(
@@ -257,7 +250,6 @@ export function get_results(
     ),
     taskOption.fromTaskEither,
     taskOption.map((r) => r.data),
-    taskOption.filter(isResultArray),
     taskOption.match(() => console.error("Bad payload"), callback)
   )();
 }
@@ -267,7 +259,7 @@ export function end_session(
   failure: () => void,
   session_id: number
 ) {
-  pipe(
+  return pipe(
     taskEither.tryCatch(
       () =>
         axios.post(
