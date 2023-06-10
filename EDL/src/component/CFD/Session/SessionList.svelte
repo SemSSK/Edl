@@ -10,6 +10,7 @@
     get_results,
     get_sessions,
   } from "../../../libjs/apis/cfd/affectRoles";
+  import AddUserForm from "../../Admin/Accounts/AddUserForm.svelte";
   let sessions: Session[] = [];
   let correction_ended: boolean[] = [];
   onMount(async () => {
@@ -25,9 +26,11 @@
           () => console.log("fail"),
           s.id!
         );
+        console.log(ended, s);
         return ended;
       })
     );
+    console.log(correction_ended);
   });
 
   const endSession = async (i: number, session: Session) => {
@@ -78,7 +81,10 @@
         {:else}
           <button
             class="text-green-700 border border-green-700 hover:bg-green-700 hover:text-white font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:focus:ring-green-800 dark:hover:bg-green-500 transform active:scale-75 transition-transform"
-            on:click={async () => await endSession(i, session)}
+            on:click={async () => {
+              await endSession(i, session);
+              navigate(`cfd/session/classment/${session.id}`);
+            }}
           >
             <Icon icon="carbon:result-draft" />
           </button>

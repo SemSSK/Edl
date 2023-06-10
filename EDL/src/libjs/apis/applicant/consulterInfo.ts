@@ -11,7 +11,6 @@ import {
   isClassmentEntryArray,
   type ClassmentEntry,
 } from "../../model/ClassmentEntry";
-import { classmentEntries } from "../../model/ClassmentEntry";
 import { taskEither, taskOption } from "fp-ts";
 import axios from "axios";
 import { axiosConfig, handleAxiosError, serverUrlBase } from "../../core";

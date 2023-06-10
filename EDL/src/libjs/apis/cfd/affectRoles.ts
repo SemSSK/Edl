@@ -8,6 +8,7 @@ import { taskEither, taskOption } from "fp-ts";
 import axios from "axios";
 import { axiosConfig, handleAxiosError, serverUrlBase } from "../../core";
 import { isBoolean } from "fp-ts/lib/boolean";
+import type { ClassmentEntry } from "../../model/ClassmentEntry";
 
 export function get_sessions(
   callback: (s: Session[]) => void,
@@ -241,6 +242,28 @@ export function get_results(
       () =>
         axios.get(
           `${serverUrlBase}/cfd/result/session=${session_id}`,
+          axiosConfig
+        ),
+      (e) =>
+        handleAxiosError(e, failure, () =>
+          console.error("unknown Error in get_sessions")
+        )
+    ),
+    taskOption.fromTaskEither,
+    taskOption.map((r) => r.data),
+    taskOption.match(() => console.error("Bad payload"), callback)
+  )();
+}
+export function get_classment(
+  callback: (rs: ClassmentEntry[]) => void,
+  failure: () => void,
+  session_id: number
+) {
+  return pipe(
+    taskEither.tryCatch(
+      () =>
+        axios.get(
+          `${serverUrlBase}/cfd/classment/session=${session_id}`,
           axiosConfig
         ),
       (e) =>

@@ -49,6 +49,7 @@
       <tr>
         <th class="px-6 py-3 text-center"> numero </th>
         <th class="px-6 py-3 text-center"> email </th>
+        <th class="px-6 py-3 text-center"> name </th>
         <th class="px-6 py-3 text-center">
           <select
             bind:value={role_to_display}
@@ -74,6 +75,9 @@
           </td>
           <td class="px-6 py-4 dark:text-white">
             {u.email}
+          </td>
+          <td class="px-6 py-4 dark:text-white">
+            {u.name}
           </td>
           <td class="px-6 py-4 dark:text-white">
             {u.role}

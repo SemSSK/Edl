@@ -75,7 +75,12 @@
         <h5
           class="mb-2 text-l font-bold tracking-tight text-gray-900 dark:text-white"
         >
-          Managed by : {v.vd.email}
+          Managed by : {v.vd.name}
+        </h5>
+        <h5
+          class="mb-2 text-l font-bold tracking-tight text-gray-900 dark:text-white"
+        >
+          Email : {v.vd.email}
         </h5>
         <div class="mt-5 w-full text-right">
           <button

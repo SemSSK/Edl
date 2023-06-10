@@ -47,7 +47,7 @@
     Create Platform
   </p>
   <div class="h-5" />
-  <div class="w-full grid grid-flow-row grid-cols-2 gap-5">
+  <div class="w-full grid grid-flow-row grid-cols-1 gap-5">
     <div class="relative z-0 w-full mb-6 group">
       <input
         type="email"
@@ -71,7 +71,7 @@
         bind:value={vp.vd_id}
       >
         {#each users as vd}
-          <option value={vd.id}>{vd.email}</option>
+          <option value={vd.id}>Name: {vd.name}, Email: {vd.email}</option>
         {/each}
       </select>
     </div>
@@ -81,7 +81,7 @@
     <p
       class="mb-3 p-5 text-white bg-red-700 text-5xl text-center font-extrabold leading-none tracking-tight dark:text-white"
     >
-      Cannot add this user
+      Cannot Create this platform
     </p>
   {/if}
   <div class="w-full flex justify-evenly">

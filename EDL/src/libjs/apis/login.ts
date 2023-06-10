@@ -1,5 +1,12 @@
 import { navigate } from "svelte-navigator";
-import { axiosConfig, decodeJwt, hasFields, logAndReturn, serverUrlBase, setJwt } from "../core";
+import {
+  axiosConfig,
+  decodeJwt,
+  hasFields,
+  logAndReturn,
+  serverUrlBase,
+  setJwt,
+} from "../core";
 import { pipe } from "fp-ts/lib/function";
 import { option, task, taskEither, taskOption } from "fp-ts";
 import type { Role } from "../model/User";
@@ -9,22 +16,13 @@ import { isString } from "fp-ts/lib/string";
 export type Credentials = {
   password: string;
   email: string;
+  name: "";
 };
 
 const credentialsField: string[] = ["password", "email"];
 export function isCredentials(x: unknown): boolean {
   return hasFields(x, credentialsField);
 }
-
-
-
-const users: Credentials[] = [
-  { password: "1", email: "A" },
-  { password: "1", email: "B" },
-  { password: "1", email: "C" },
-  { password: "1", email: "D" },
-  { password: "1", email: "E" },
-];
 
 const jwts_by_username = new Map<string, string>([
   [
@@ -40,25 +38,30 @@ const jwts_by_username = new Map<string, string>([
   ["E", "eke"],
 ]);
 
-export const login = (credentials: Credentials, failure: () => void) => pipe(
-  taskEither.tryCatch(() => axios.post(`${serverUrlBase}/auth/login`, credentials, axiosConfig), e => {
-    alert("Bad Credentials");
-    failure();
-  }),
-  taskOption.fromTaskEither,
-  taskOption.chain(r =>
-    isString(r.data) ?
-      taskOption.fromNullable(r.data) :
-      taskOption.none
-  ),
-  taskOption.chain(jwt => {
-    setJwt(jwt);
-    return taskOption.some(jwt);
-  }),
-  taskOption.chain(jwt => taskOption.fromNullable(decodeJwt(jwt))),
-  logAndReturn,
-  taskOption.match(() => console.error("Bad Payload"), jpl => navigate(`/${jpl.role.toLowerCase()}`))
-)()
+export const login = (credentials: Credentials, failure: () => void) =>
+  pipe(
+    taskEither.tryCatch(
+      () => axios.post(`${serverUrlBase}/auth/login`, credentials, axiosConfig),
+      (e) => {
+        alert("Bad Credentials");
+        failure();
+      }
+    ),
+    taskOption.fromTaskEither,
+    taskOption.chain((r) =>
+      isString(r.data) ? taskOption.fromNullable(r.data) : taskOption.none
+    ),
+    taskOption.chain((jwt) => {
+      setJwt(jwt);
+      return taskOption.some(jwt);
+    }),
+    taskOption.chain((jwt) => taskOption.fromNullable(decodeJwt(jwt))),
+    logAndReturn,
+    taskOption.match(
+      () => console.error("Bad Payload"),
+      (jpl) => navigate(`/${jpl.role.toLowerCase()}`)
+    )
+  )();
 
 export function logout() {
   localStorage.removeItem("Auth");

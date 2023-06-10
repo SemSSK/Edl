@@ -12,9 +12,8 @@
   import { navigate } from "svelte-navigator";
   type Corrector_nb_copies = {
     corrector: User;
-    nbcopies1: number;
-    nbcopies2: number;
-    nbcopies3: number;
+    nbcopies: number;
+    correction_number: number;
   };
   type Copy = {
     applicant: User;
@@ -51,9 +50,8 @@
         (possible_correctors = u.map((c) => {
           return {
             corrector: c,
-            nbcopies1: 0,
-            nbcopies2: 0,
-            nbcopies3: 0,
+            nbcopies: 0,
+            correction_number: 1,
           };
         })),
       () => alert("failure"),
@@ -67,9 +65,9 @@
     for (let i = 0; i < possible_correctors.length; i++) {
       let c = possible_correctors[i];
       copies_taken = [
-        copies_taken[0] - c.nbcopies1,
-        copies_taken[1] - c.nbcopies2,
-        copies_taken[2] - c.nbcopies3,
+        copies_taken[0] - (c.correction_number === 1 ? c.nbcopies : 0),
+        copies_taken[1] - (c.correction_number === 2 ? c.nbcopies : 0),
+        copies_taken[2] - (c.correction_number === 3 ? c.nbcopies : 0),
       ];
     }
     copies_left = copies_taken;
@@ -82,29 +80,25 @@
       let corrector_3_id = 0;
       for (let i = 0; i < correctors.length; i++) {
         let corr = correctors[i];
-        if (corr.nbcopies1 !== 0) {
+        if (corr.nbcopies !== 0 && corr.correction_number === 1) {
           corrector_1_id = corr.corrector.id!;
-          correctors[i].nbcopies1 -= 1;
+          correctors[i].nbcopies -= 1;
           break;
         }
       }
       for (let i = 0; i < correctors.length; i++) {
         let corr = correctors[i];
-        if (corr.nbcopies2 !== 0 && corr.corrector.id !== corrector_1_id) {
+        if (corr.nbcopies !== 0 && corr.correction_number === 2) {
           corrector_2_id = corr.corrector.id!;
-          correctors[i].nbcopies2 -= 1;
+          correctors[i].nbcopies -= 1;
           break;
         }
       }
       for (let i = 0; i < correctors.length; i++) {
         let corr = correctors[i];
-        if (
-          corr.nbcopies3 !== 0 &&
-          corr.corrector.id !== corrector_2_id &&
-          corr.corrector.id !== corrector_1_id
-        ) {
+        if (corr.nbcopies !== 0 && corr.correction_number === 3) {
           corrector_3_id = corr.corrector.id!;
-          correctors[i].nbcopies3 -= 1;
+          correctors[i].nbcopies -= 1;
           break;
         }
       }
@@ -124,7 +118,8 @@
     });
   };
   const submit = async () => {
-    if (copies_left.reduce((p, c) => p + c) !== 0) {
+    console.log(copies_left);
+    if (!copies_left.every((c) => c === 0)) {
       alert("Cannot submit");
     } else {
       let current_copies = copies;
@@ -165,56 +160,72 @@
           >
             {c.corrector.email}
           </h5>
-          <div>
-            <label
-              for="nbcopies1"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >Note 1 : {c.nbcopies1}</label
-            >
-            <input
-              name="nbcopies1"
-              type="range"
-              min="0"
-              max={copies.length - (c.nbcopies2 + c.nbcopies3)}
-              bind:value={c.nbcopies1}
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Module name"
-              on:change={updateCopiesLeft}
-            />
-          </div>
-          <div>
-            <label
-              for="nbcopies2"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >Note 2 : {c.nbcopies2}</label
-            >
-            <input
-              name="nbcopies2"
-              type="range"
-              min="0"
-              max={copies.length - (c.nbcopies1 + c.nbcopies3)}
-              bind:value={c.nbcopies2}
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Module name"
-              on:change={updateCopiesLeft}
-            />
-          </div>
-          <div>
-            <label
-              for="nbcopies3"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >Note 3 : {c.nbcopies3}</label
-            >
-            <input
-              name="nbcopies3"
-              type="range"
-              min="0"
-              max={copies.length - (c.nbcopies1 + c.nbcopies2)}
-              bind:value={c.nbcopies3}
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Module name"
-              on:change={updateCopiesLeft}
-            />
+          <div class="flex flex-row justify-evenly items-center">
+            <div class="flex flex-col">
+              <label for="" class="dark:text-white">Correction stage</label>
+              <input
+                type="number"
+                bind:value={c.correction_number}
+                min="1"
+                max="3"
+                class="w-1/3 h-1/2 border bg-gray-100 dark:bg-gray-700 dark:text-white"
+              />
+            </div>
+            {#if c.correction_number === 1}
+              <div>
+                <label
+                  for="nbcopies1"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Note 1 : {c.nbcopies}</label
+                >
+                <input
+                  name="nbcopies1"
+                  type="range"
+                  min="0"
+                  max={copies.length}
+                  bind:value={c.nbcopies}
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Module name"
+                  on:change={updateCopiesLeft}
+                />
+              </div>
+            {:else if c.correction_number === 2}
+              <div>
+                <label
+                  for="nbcopies2"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Note 2 : {c.nbcopies}</label
+                >
+                <input
+                  name="nbcopies2"
+                  type="range"
+                  min="0"
+                  max={copies.length}
+                  bind:value={c.nbcopies}
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Module name"
+                  on:change={updateCopiesLeft}
+                />
+              </div>
+            {:else}
+              <div>
+                <label
+                  for="nbcopies3"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Note 3 : {c.nbcopies}</label
+                >
+                <input
+                  name="nbcopies3"
+                  type="range"
+                  min="0"
+                  max={copies.length}
+                  bind:value={c.nbcopies}
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Module name"
+                  on:change={updateCopiesLeft}
+                />
+              </div>
+            {/if}
           </div>
         </div>
       {/each}

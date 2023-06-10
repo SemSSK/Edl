@@ -56,7 +56,10 @@
           ends at : {convertTimeToDate(session.ending_time)}
         </h5>
         <p class="font-normal text-gray-700 dark:text-gray-400">
-          managed by : {cfd.email}
+          managed by : {cfd.name}
+        </p>
+        <p class="font-normal text-gray-700 dark:text-gray-400">
+          Email Address : {cfd.email}
         </p>
         <div
           class="mt-5 w-full text-right gird grid-flow-col grid-cols-2 space-x-3"

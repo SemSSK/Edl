@@ -118,3 +118,7 @@ export function formDataToObject(formData: any) {
     formElemKeys.map((key) => [key, normalizeValues(formData.getAll(key))])
   );
 }
+
+export function getRandom(items: any[]) {
+  return Math.floor(Math.random() * items.length);
+}

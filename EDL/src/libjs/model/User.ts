@@ -5,6 +5,7 @@ export type Role = "Admin" | "ViceDoyen" | "Professor" | "CFD" | "Applicant";
 export type User = {
   id?: number;
   email: string;
+  name: string;
   password?: string;
   role?: Role;
   domaine?: string;

@@ -4,6 +4,7 @@
   import Main from "../general/User/Main.svelte";
   import AffectingCorrectors from "./Session/AffectingCorrectors.svelte";
   import AffectingMonitors from "./Session/AffectingMonitors.svelte";
+  import ClassmentPage from "./Session/ClassmentPage.svelte";
   import SessionList from "./Session/SessionList.svelte";
   let userRole = "CFD";
   let navBar: SideBarItem[] = [
@@ -33,16 +34,16 @@
       path: "/session/affecting-monitors/:session_id",
       component: AffectingMonitors,
     },
+    {
+      path: "/session/classment/:session_id",
+      component: ClassmentPage,
+    },
     // {
     //   path: "/session/check-results/:session_id"
     // },
     {
       path: "/session",
       component: SessionList,
-    },
-    {
-      path: "",
-      component: Content,
     },
   ];
 </script>

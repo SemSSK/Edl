@@ -4,11 +4,13 @@
   let current_user: Credentials = {
     password: "",
     email: "",
+    name: "",
   };
   function resetFields() {
     current_user = {
       password: "",
       email: "",
+      name: "",
     };
   }
 </script>
