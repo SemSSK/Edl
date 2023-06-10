@@ -24,8 +24,8 @@
     );
   });
 
-  let submit = () => {
-    updateUser(
+  let submit = async () => {
+    await updateUser(
       (us) => {
         navigate("/admin/users");
       },

@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Page, SideBarItem } from "../../libjs/uiTypes";
   import Main from "../general/User/Main.svelte";
+  import Welcome from "../general/Welcome.svelte";
   import ApplicantsEncoding from "./Session/Creation/ApplicantsEncoding.svelte";
   import SessionForm from "./Session/Creation/SessionForm.svelte";
   import SessionList from "./Session/SessionList.svelte";
@@ -35,6 +36,10 @@
     {
       path: "/session/:session_id",
       component: ApplicantsEncoding,
+    },
+    {
+      path: "",
+      component: Welcome,
     },
   ];
 </script>

@@ -74,7 +74,7 @@ export function addUser(
   failure: () => void,
   user: User
 ) {
-  pipe(
+  return pipe(
     taskEither.tryCatch(
       () => axios.post(`${serverUrlBase}/admin/`, user, axiosConfig),
       (e) => {
@@ -97,7 +97,7 @@ export function updateUser(
   failure: () => void,
   user: User
 ) {
-  pipe(
+  return pipe(
     taskEither.tryCatch(
       () => axios.put(`${serverUrlBase}/admin/`, user, axiosConfig),
       (e) => {

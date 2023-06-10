@@ -56,6 +56,7 @@ export async function getModules(
     taskOption.match(() => console.error("Bad payload"), callBack)
   )();
 }
+
 export async function getAnnouncements(
   callBack: (a: Announcement[]) => void,
   failure: () => void,

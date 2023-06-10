@@ -2,6 +2,7 @@
   import type { Page, SideBarItem } from "../../libjs/uiTypes";
   import Content from "../general/User/Content.svelte";
   import Main from "../general/User/Main.svelte";
+  import Welcome from "../general/Welcome.svelte";
   import AffectingCorrectors from "./Session/AffectingCorrectors.svelte";
   import AffectingMonitors from "./Session/AffectingMonitors.svelte";
   import ClassmentPage from "./Session/ClassmentPage.svelte";
@@ -44,6 +45,10 @@
     {
       path: "/session",
       component: SessionList,
+    },
+    {
+      path: "",
+      component: Welcome,
     },
   ];
 </script>

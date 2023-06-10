@@ -2,6 +2,7 @@
   import type { Page, SideBarItem } from "../../libjs/uiTypes";
   import Content from "../general/User/Content.svelte";
   import Main from "../general/User/Main.svelte";
+  import Welcome from "../general/Welcome.svelte";
   import GradingSessionList from "./Grading/GradingSessionList.svelte";
   import GradingTable from "./Grading/GradingTable.svelte";
   import MonitoringList from "./MonitoringList.svelte";
@@ -42,6 +43,10 @@
     {
       path: "/grading",
       component: GradingSessionList,
+    },
+    {
+      path: "",
+      component: Welcome,
     },
   ];
 </script>

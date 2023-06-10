@@ -34,22 +34,23 @@ export async function getReclamation(
 }
 
 export async function addReclamation(
-  callback: (c: Reclamation[]) => void,
+  callback: () => void,
   failure: () => void,
   reclamation: Reclamation
 ) {
-  pipe(
+  return pipe(
     taskEither.tryCatch(
       () =>
-        axios.post(`${serverUrlBase}/reclamation`, reclamation, axiosConfig),
+        axios.post(
+          `${serverUrlBase}/applicant/reclamation`,
+          reclamation,
+          axiosConfig
+        ),
       (e) => {
         handleAxiosError(e, failure, () =>
           console.error("unknown Error in getVirtualPlatform")
         );
       }
-    ),
-    taskEither.match(console.error, () => {
-      getReclamation(callback, failure, reclamation.session_id);
-    })
+    )
   )();
 }

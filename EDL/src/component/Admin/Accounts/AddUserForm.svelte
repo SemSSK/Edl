@@ -4,6 +4,7 @@
   import { addUser } from "../../../libjs/apis/admin/accounts";
   import { navigate } from "svelte-navigator";
   let cannot_add_user = false;
+  let deactivate = false;
   let def: User = {
     email: "",
     name: "",
@@ -12,8 +13,9 @@
     specialty: "GL",
   };
   let user: User = def;
-  let submit = () => {
-    addUser(
+  let submit = async () => {
+    deactivate = true;
+    await addUser(
       (us) => {
         navigate("/admin/users");
       },
@@ -22,6 +24,7 @@
       },
       user
     );
+    deactivate = false;
   };
 </script>
 
@@ -124,6 +127,7 @@
       type="button"
       class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transform active:scale-75 transition-transform"
       on:click={submit}
+      disabled={deactivate}
     >
       Validate
       <Icon class="w-5 h-5 ml-2 -mr-1" icon="carbon:add-filled" />

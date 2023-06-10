@@ -2,6 +2,7 @@
   import type { Page, SideBarItem } from "../../libjs/uiTypes";
   import Content from "../general/User/Content.svelte";
   import Main from "../general/User/Main.svelte";
+  import Welcome from "../general/Welcome.svelte";
   import SessionDetails from "./SessionDetails.svelte";
   import SessionList from "./SessionList.svelte";
   let userRole = "Applicant";
@@ -35,6 +36,10 @@
     {
       path: "",
       component: SessionDetails,
+    },
+    {
+      path: "",
+      component: Welcome,
     },
   ];
 </script>

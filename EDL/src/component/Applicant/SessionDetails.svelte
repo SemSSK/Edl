@@ -17,6 +17,10 @@
   import { pipe } from "fp-ts/lib/function";
   import { option } from "fp-ts";
   import type { User } from "../../libjs/model/User";
+  import type { Reclamation } from "../../libjs/model/Reclamation";
+  import { addReclamation } from "../../libjs/apis/applicant/reclamation";
+  import { navigate } from "svelte-navigator";
+  let reclamation: string = "";
 
   let actives = 1;
   const next = () => {
@@ -70,6 +74,22 @@
       }
     }
   });
+  const send_reclamation = async () => {
+    let rec: Reclamation = {
+      applicant_id: user.id,
+      content: reclamation,
+      module_id: "",
+      session_id: 1,
+    };
+    await addReclamation(
+      () => {},
+      () => {
+        console.error("failed");
+      },
+      rec
+    );
+    navigate("/applicant");
+  };
 </script>
 
 {#if session && modules}
@@ -261,20 +281,26 @@
                         {r.classment}
                       </div>
                     {/each}
+                    <input
+                      type="text"
+                      bind:value={reclamation}
+                      class="bg-gray-200 focus:outline-none rounded-xl p-2 m-2 dark:text-white dark:bg-gray-700"
+                      placeholder="Reclamation"
+                    />
+                    <div class="text-left mt-2">
+                      <button
+                        class="p-2 pl-3 pr-3 rounded-sm bg-green-600 text-white"
+                        on:click={send_reclamation}
+                      >
+                        Send
+                      </button>
+                    </div>
                     <div class="text-left">
                       <button
                         class="p-2 pl-3 pr-3 rounded-sm bg-blue-700 text-white"
                         on:click={prev}
                       >
                         Prev
-                      </button>
-                    </div>
-                    <div class="text-right mr-10">
-                      <button
-                        class="p-2 pl-3 pr-3 rounded-sm bg-green-600 text-white"
-                        on:click={next}
-                      >
-                        Send
                       </button>
                     </div>
                   </div>
